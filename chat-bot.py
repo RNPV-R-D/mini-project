@@ -5,7 +5,6 @@ import wikipedia
 import webbrowser
 import os
 import random
-from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
 # Initialize the speech recognition engine
 recognizer = sr.Recognizer()
@@ -13,10 +12,6 @@ microphone = sr.Microphone()
 
 # Initialize the text-to-speech engine
 engine = pyttsx3.init()
-
-# Load GPT2 model and tokenizer
-tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-model = GPT2LMHeadModel.from_pretrained("gpt2")
 
 # Function to speak out the text
 def speak(text):
@@ -53,13 +48,6 @@ def take_command():
 
     return query
 
-# Function to generate response using GPT model
-def generate_response(prompt):
-    input_ids = tokenizer.encode(prompt, return_tensors="pt")
-    response_ids = model.generate(input_ids, max_length=100, num_return_sequences=1, no_repeat_ngram_size=2)
-    response = tokenizer.decode(response_ids[0], skip_special_tokens=True)
-    return response
-
 # Function to execute commands
 def execute_command(query):
     if 'wikipedia' in query.lower():
@@ -85,9 +73,11 @@ def execute_command(query):
         speak("Goodbye!")
         exit()
     else:
-        response = generate_response(query)
-        print("Jarvis:", response)
-        speak(response)
+        # Handle custom commands here
+        speak("Sorry, I don't understand that command. Would you like me to search the web for you?")
+        response = take_command()
+        if response:
+            webbrowser.open(f"https://www.google.com/search?q={response}")
 
 # Main function
 def main():
