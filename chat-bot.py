@@ -24,9 +24,9 @@ def greet():
     if 0 <= hour < 12:
         speak("Good morning!")
     elif 12 <= hour < 18:
-        speak("Good afternoon!")
+        speak("A very good afternoon!")
     else:
-        speak("Good evening!")
+        speak("A very good evening!")
 
     speak("I am Jarvis. How can I assist you today?")
 
